@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.sashapersholja.com/sitemap.xml
+Sitemap: https://sashapersholja.com/sitemap.xml
