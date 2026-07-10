@@ -1,4 +1,3 @@
-const platformButton = document.getElementById('platformButton');
 const soundToggle = document.getElementById('soundToggle');
 const heroVideo = document.querySelector('.hero-video');
 const topbar = document.querySelector('.topbar');
@@ -38,22 +37,25 @@ const GA_EVENT_LINKS = [
     selector: 'a[href="https://www.facebook.com/SashaPersholja/"]',
     eventName: 'social_click',
     params: { network: 'facebook' }
+  },
+  {
+    selector: 'a[href="https://www.instagram.com/sasha.persholja/"]',
+    eventName: 'social_click',
+    params: { network: 'instagram' }
+  },
+  {
+    selector: 'a[href="https://www.youtube.com/@mkudmkud"]',
+    eventName: 'social_click',
+    params: { network: 'youtube' }
   }
 ];
-
-function scrollToPlatformSection() {
-  const listenSection = document.getElementById('listen');
-  if (listenSection) {
-    listenSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-}
 
 function updateSoundButton() {
   if (!soundToggle || !heroVideo) return;
 
   const soundIsOn = !heroVideo.muted;
   soundToggle.textContent = soundIsOn ? '🔊 Sound On' : '🔇 Sound Off';
-  soundToggle.setAttribute('aria-label', soundIsOn ? 'Turn sound off' : 'Turn sound on');
+  soundToggle.setAttribute('aria-label', soundIsOn ? 'Turn sound off for the Big Black Puppet video' : 'Turn sound on for the Big Black Puppet video');
   soundToggle.setAttribute('aria-pressed', String(soundIsOn));
 }
 
@@ -95,6 +97,8 @@ function sendGAEventBeforeNavigation(event, link, eventName, params) {
   window.gtag('event', eventName, {
     ...params,
     link_url: link.href,
+    outbound: link.hostname !== window.location.hostname,
+    transport_type: 'beacon',
     event_callback: navigateOnce,
     event_timeout: 1000
   });
@@ -110,10 +114,6 @@ function attachGAEventTracking() {
       });
     });
   });
-}
-
-if (platformButton) {
-  platformButton.addEventListener('click', scrollToPlatformSection);
 }
 
 if (topbar) {
