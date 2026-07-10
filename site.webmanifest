@@ -1,10 +1,12 @@
 {
+  "id": "https://sashapersholja.com/",
   "name": "Big Black Puppet – Sasha Persholja",
   "short_name": "Big Black Puppet",
   "description": "Official landing page for Big Black Puppet by Sasha Persholja. Listen, buy and support the track.",
   "start_url": "https://sashapersholja.com/",
   "scope": "https://sashapersholja.com/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#050505",
   "theme_color": "#050505",
   "lang": "en",
