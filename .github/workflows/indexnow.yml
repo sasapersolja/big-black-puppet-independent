@@ -1,0 +1,178 @@
+name: Notify IndexNow
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.html"
+      - "sitemap.xml"
+      - "robots.txt"
+      - "6af556ee7c722152e5b9dc444ab8a4f6021110e14510ef85a6ba374b2855f71b.txt"
+      - ".github/workflows/indexnow.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: indexnow-main
+  cancel-in-progress: true
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    env:
+      SITE_ORIGIN: https://sashapersholja.com
+      INDEXNOW_KEY: 6af556ee7c722152e5b9dc444ab8a4f6021110e14510ef85a6ba374b2855f71b
+      INDEXNOW_ENDPOINT: https://api.indexnow.org/indexnow
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Determine changed production URLs
+        id: urls
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python - <<'PY'
+          import json
+          import os
+          import pathlib
+          import subprocess
+          import urllib.parse
+          import xml.etree.ElementTree as ET
+
+          origin = os.environ["SITE_ORIGIN"].rstrip("/")
+          parsed_origin = urllib.parse.urlparse(origin)
+          expected_host = parsed_origin.netloc
+
+          event_name = os.environ.get("GITHUB_EVENT_NAME", "")
+          before = os.environ.get("GITHUB_EVENT_BEFORE", "")
+          sha = os.environ.get("GITHUB_SHA", "HEAD")
+
+          if event_name == "workflow_dispatch" or not before or set(before) == {"0"}:
+              changed = ["sitemap.xml", "index.html"]
+          else:
+              result = subprocess.run(
+                  ["git", "diff", "--name-status", before, sha, "--", "*.html", "**/*.html", "sitemap.xml"],
+                  check=True,
+                  capture_output=True,
+                  text=True,
+              )
+              changed = []
+              for line in result.stdout.splitlines():
+                  parts = line.split("\t")
+                  if len(parts) >= 2:
+                      changed.append(parts[-1])
+
+          urls = set()
+
+          def add_url(value: str) -> None:
+              parsed = urllib.parse.urlparse(value)
+              if parsed.scheme != "https" or parsed.netloc != expected_host:
+                  raise SystemExit(f"Refusing non-production IndexNow URL: {value}")
+              urls.add(value)
+
+          if "sitemap.xml" in changed or event_name == "workflow_dispatch":
+              sitemap = pathlib.Path("sitemap.xml")
+              if sitemap.exists():
+                  root = ET.parse(sitemap).getroot()
+                  namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+                  for node in root.findall("sm:url/sm:loc", namespace):
+                      if node.text and node.text.strip():
+                          add_url(node.text.strip())
+
+          for filename in changed:
+              if not filename.endswith(".html"):
+                  continue
+              path = pathlib.PurePosixPath(filename)
+              if path.name == "index.html":
+                  relative = "" if str(path.parent) == "." else f"{path.parent}/"
+              else:
+                  relative = str(path)
+              add_url(f"{origin}/{relative}")
+
+          ordered = sorted(urls)
+          pathlib.Path("/tmp/indexnow-urls.json").write_text(json.dumps(ordered), encoding="utf-8")
+          pathlib.Path("/tmp/indexnow-payload.json").write_text(
+              json.dumps(
+                  {
+                      "host": expected_host,
+                      "key": os.environ["INDEXNOW_KEY"],
+                      "keyLocation": f"{origin}/{os.environ['INDEXNOW_KEY']}.txt",
+                      "urlList": ordered,
+                  },
+                  ensure_ascii=False,
+              ),
+              encoding="utf-8",
+          )
+
+          output_file = os.environ["GITHUB_OUTPUT"]
+          with open(output_file, "a", encoding="utf-8") as output:
+              output.write(f"count={len(ordered)}\n")
+
+          print(f"Prepared {len(ordered)} unique production URL(s):")
+          for url in ordered:
+              print(f"- {url}")
+          PY
+        env:
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+
+      - name: Skip when no public page changed
+        if: steps.urls.outputs.count == '0'
+        run: echo "No page or sitemap URL requires an IndexNow notification."
+
+      - name: Wait for the key file to be deployed
+        if: steps.urls.outputs.count != '0'
+        id: keycheck
+        shell: bash
+        run: |
+          set -u
+          key_url="${SITE_ORIGIN}/${INDEXNOW_KEY}.txt"
+
+          for attempt in $(seq 1 30); do
+            body=$(curl --silent --show-error --location --max-time 15 \
+              --header "Cache-Control: no-cache" \
+              "${key_url}?deploy=${GITHUB_SHA}" 2>/dev/null || true)
+
+            if [[ "${body}" == "${INDEXNOW_KEY}" ]]; then
+              echo "available=true" >> "${GITHUB_OUTPUT}"
+              echo "IndexNow key file is live."
+              exit 0
+            fi
+
+            echo "Key file not live yet (attempt ${attempt}/30); retrying in 10 seconds."
+            sleep 10
+          done
+
+          echo "available=false" >> "${GITHUB_OUTPUT}"
+          echo "::warning::IndexNow key file was not reachable after deployment wait; notification skipped safely."
+
+      - name: Notify IndexNow
+        if: steps.urls.outputs.count != '0' && steps.keycheck.outputs.available == 'true'
+        shell: bash
+        run: |
+          set -u
+
+          response_file=$(mktemp)
+          http_status=$(curl --silent --show-error \
+            --output "${response_file}" \
+            --write-out "%{http_code}" \
+            --max-time 30 \
+            --request POST \
+            --header "Content-Type: application/json; charset=utf-8" \
+            --data-binary @/tmp/indexnow-payload.json \
+            "${INDEXNOW_ENDPOINT}" || echo "000")
+
+          case "${http_status}" in
+            200|202)
+              echo "IndexNow accepted ${http_status}: $(cat "${response_file}")"
+              ;;
+            *)
+              echo "::warning::IndexNow endpoint returned HTTP ${http_status}. This does not fail or alter the website deployment. Response: $(cat "${response_file}")"
+              ;;
+          esac
