@@ -88,7 +88,10 @@
         "isPartOf": { "@id": "https://sashapersholja.com/#website" },
         "mainEntity": { "@id": "https://sashapersholja.com/#artist" },
         "about": { "@id": "https://sashapersholja.com/#artist" },
-        "mentions": { "@id": "https://sashapersholja.com/#big-black-puppet" },
+        "mentions": [
+          { "@id": "https://sashapersholja.com/#big-black-puppet" },
+          { "@id": "https://sashapersholja.com/#fejkavangard" }
+        ],
         "creator": { "@id": "https://sashapersholja.com/#artist" },
         "publisher": { "@id": "https://sashapersholja.com/#mkud-music-arts" },
         "inLanguage": "en",
@@ -100,10 +103,19 @@
         "@id": "https://sashapersholja.com/#artist",
         "name": "Sasha Persholja",
         "alternateName": ["Saša Peršolja", "Sasa Persholja"],
-        "description": "Sasha Persholja is a Slovenian musician, singer, songwriter, guitarist, composer, producer and multi-instrumentalist. He is the creator of the original music concept Fejkavangard, developed in Central Europe and former Yugoslavia from the 1980s onward.",
+        "description": "Sasha Persholja is a Slovenian musician, singer, songwriter, guitarist, composer, producer and multi-instrumentalist. He is the creator of the original independent music concept Fejkavangard, developed in Central Europe and former Yugoslavia from the 1980s onward.",
         "url": "https://sashapersholja.com/",
         "image": "https://sashapersholja.com/assets/images/Sasha%20Persholja%20Live.png",
         "jobTitle": "Musician, singer, songwriter, guitarist, composer, producer and multi-instrumentalist",
+        "hasOccupation": [
+          { "@type": "Occupation", "name": "Musician" },
+          { "@type": "Occupation", "name": "Singer" },
+          { "@type": "Occupation", "name": "Songwriter" },
+          { "@type": "Occupation", "name": "Guitarist" },
+          { "@type": "Occupation", "name": "Composer" },
+          { "@type": "Occupation", "name": "Music producer" },
+          { "@type": "Occupation", "name": "Multi-instrumentalist" }
+        ],
         "nationality": {
           "@type": "Country",
           "name": "Slovenia"
@@ -133,7 +145,10 @@
           "https://www.instagram.com/sasha.persholja/"
         ],
         "subjectOf": { "@id": "https://sashapersholja.com/#webpage" },
-        "workExample": { "@id": "https://sashapersholja.com/#big-black-puppet" }
+        "workExample": [
+          { "@id": "https://sashapersholja.com/#big-black-puppet" },
+          { "@id": "https://sashapersholja.com/#fejkavangard" }
+        ]
       },
       {
         "@type": "Organization",
@@ -152,6 +167,19 @@
         }
       },
       {
+        "@type": "CreativeWork",
+        "@id": "https://sashapersholja.com/#fejkavangard",
+        "name": "Fejkavangard",
+        "description": "An original independent music concept created by Sasha Persholja and developed in Central Europe and former Yugoslavia from the 1980s onward.",
+        "creator": { "@id": "https://sashapersholja.com/#artist" },
+        "publisher": { "@id": "https://sashapersholja.com/#mkud-music-arts" },
+        "spatialCoverage": [
+          { "@type": "Place", "name": "Central Europe" },
+          { "@type": "Place", "name": "former Yugoslavia" }
+        ],
+        "genre": ["Blues Rock", "Funk", "Alternative"]
+      },
+      {
         "@type": "MusicRecording",
         "@id": "https://sashapersholja.com/#big-black-puppet",
         "name": "Big Black Puppet",
@@ -160,6 +188,7 @@
         "description": "Featured release by Sasha Persholja.",
         "genre": ["Blues Rock", "Funk", "Blues Rock Funk"],
         "byArtist": { "@id": "https://sashapersholja.com/#artist" },
+        "creator": { "@id": "https://sashapersholja.com/#artist" },
         "publisher": { "@id": "https://sashapersholja.com/#mkud-music-arts" },
         "mainEntityOfPage": { "@id": "https://sashapersholja.com/#webpage" },
         "sameAs": [
