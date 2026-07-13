@@ -49,6 +49,8 @@ jobs:
           origin = os.environ["SITE_ORIGIN"].rstrip("/")
           parsed_origin = urllib.parse.urlparse(origin)
           expected_host = parsed_origin.netloc
+          key_filename = f"{os.environ['INDEXNOW_KEY']}.txt"
+          workflow_filename = ".github/workflows/indexnow.yml"
 
           event_name = os.environ.get("GITHUB_EVENT_NAME", "")
           before = os.environ.get("GITHUB_EVENT_BEFORE", "")
@@ -58,7 +60,11 @@ jobs:
               changed = ["sitemap.xml", "index.html"]
           else:
               result = subprocess.run(
-                  ["git", "diff", "--name-status", before, sha, "--", "*.html", "**/*.html", "sitemap.xml"],
+                  [
+                      "git", "diff", "--name-status", before, sha, "--",
+                      "*.html", "**/*.html", "sitemap.xml", "robots.txt",
+                      key_filename, workflow_filename,
+                  ],
                   check=True,
                   capture_output=True,
                   text=True,
@@ -68,6 +74,9 @@ jobs:
                   parts = line.split("\t")
                   if len(parts) >= 2:
                       changed.append(parts[-1])
+
+          if key_filename in changed or workflow_filename in changed or "robots.txt" in changed:
+              changed.extend(["sitemap.xml", "index.html"])
 
           urls = set()
 
@@ -97,7 +106,6 @@ jobs:
               add_url(f"{origin}/{relative}")
 
           ordered = sorted(urls)
-          pathlib.Path("/tmp/indexnow-urls.json").write_text(json.dumps(ordered), encoding="utf-8")
           pathlib.Path("/tmp/indexnow-payload.json").write_text(
               json.dumps(
                   {
@@ -166,13 +174,13 @@ jobs:
             --request POST \
             --header "Content-Type: application/json; charset=utf-8" \
             --data-binary @/tmp/indexnow-payload.json \
-            "${INDEXNOW_ENDPOINT}" || echo "000")
+            "${INDEXNOW_ENDPOINT}" || true)
 
           case "${http_status}" in
             200|202)
-              echo "IndexNow accepted ${http_status}: $(cat "${response_file}")"
+              echo "IndexNow accepted HTTP ${http_status}."
               ;;
             *)
-              echo "::warning::IndexNow endpoint returned HTTP ${http_status}. This does not fail or alter the website deployment. Response: $(cat "${response_file}")"
+              echo "::warning::IndexNow endpoint returned HTTP ${http_status:-000}. This does not fail or alter the website deployment. Response: $(cat "${response_file}")"
               ;;
           esac
