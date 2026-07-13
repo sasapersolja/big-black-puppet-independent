@@ -75,9 +75,10 @@
         "name": "Sasha Persholja | Official Website",
         "url": "https://sashapersholja.com/",
         "inLanguage": "en",
-        "publisher": { "@id": "https://sashapersholja.com/#artist" },
+        "publisher": { "@id": "https://sashapersholja.com/#mkud-music-arts" },
+        "author": { "@id": "https://sashapersholja.com/#artist" },
         "about": { "@id": "https://sashapersholja.com/#artist" },
-        "description": "Official website of Sasha Persholja – blues rock, funk and alternative artist."
+        "description": "Official website of Sasha Persholja, a Slovenian musician, singer, songwriter, guitarist, composer, producer and multi-instrumentalist."
       },
       {
         "@type": "WebPage",
@@ -89,6 +90,7 @@
         "about": { "@id": "https://sashapersholja.com/#artist" },
         "mentions": { "@id": "https://sashapersholja.com/#big-black-puppet" },
         "creator": { "@id": "https://sashapersholja.com/#artist" },
+        "publisher": { "@id": "https://sashapersholja.com/#mkud-music-arts" },
         "inLanguage": "en",
         "isAccessibleForFree": true,
         "description": "Official website of Sasha Persholja with Big Black Puppet as the featured release."
@@ -98,11 +100,30 @@
         "@id": "https://sashapersholja.com/#artist",
         "name": "Sasha Persholja",
         "alternateName": ["Saša Peršolja", "Sasa Persholja"],
+        "description": "Sasha Persholja is a Slovenian musician, singer, songwriter, guitarist, composer, producer and multi-instrumentalist. He is the creator of the original music concept Fejkavangard, developed in Central Europe and former Yugoslavia from the 1980s onward.",
         "url": "https://sashapersholja.com/",
         "image": "https://sashapersholja.com/assets/images/Sasha%20Persholja%20Live.png",
-        "jobTitle": "Musician, songwriter and recording artist",
+        "jobTitle": "Musician, singer, songwriter, guitarist, composer, producer and multi-instrumentalist",
+        "nationality": {
+          "@type": "Country",
+          "name": "Slovenia"
+        },
         "genre": ["Blues Rock", "Funk", "Alternative", "Blues Rock Funk", "Fejkavangard"],
-        "knowsAbout": ["blues rock", "funk", "alternative music", "songwriting", "guitar"],
+        "knowsAbout": ["blues rock", "funk", "alternative music", "songwriting", "guitar", "music composition", "music production", "Fejkavangard"],
+        "affiliation": { "@id": "https://sashapersholja.com/#mkud-music-arts" },
+        "memberOf": { "@id": "https://sashapersholja.com/#ascap" },
+        "identifier": [
+          {
+            "@type": "PropertyValue",
+            "propertyID": "ASCAP Member ID",
+            "value": "3911943"
+          },
+          {
+            "@type": "PropertyValue",
+            "propertyID": "IPI Name Number",
+            "value": "705219173"
+          }
+        ],
         "sameAs": [
           "https://sashapersholja.bandcamp.com/",
           "https://music.apple.com/si/artist/sasha-persholja/982227457",
@@ -115,6 +136,22 @@
         "workExample": { "@id": "https://sashapersholja.com/#big-black-puppet" }
       },
       {
+        "@type": "Organization",
+        "@id": "https://sashapersholja.com/#mkud-music-arts",
+        "name": "MKUD Music Arts",
+        "description": "Music publisher associated with Sasha Persholja and his recorded music.",
+        "sameAs": "https://www.youtube.com/@mkudmkud"
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://sashapersholja.com/#ascap",
+        "name": "ASCAP",
+        "location": {
+          "@type": "Place",
+          "name": "New York"
+        }
+      },
+      {
         "@type": "MusicRecording",
         "@id": "https://sashapersholja.com/#big-black-puppet",
         "name": "Big Black Puppet",
@@ -123,6 +160,7 @@
         "description": "Featured release by Sasha Persholja.",
         "genre": ["Blues Rock", "Funk", "Blues Rock Funk"],
         "byArtist": { "@id": "https://sashapersholja.com/#artist" },
+        "publisher": { "@id": "https://sashapersholja.com/#mkud-music-arts" },
         "mainEntityOfPage": { "@id": "https://sashapersholja.com/#webpage" },
         "sameAs": [
           "https://sashapersholja.bandcamp.com/track/sasha-persholja-big-black-puppet",
