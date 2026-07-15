@@ -54,8 +54,8 @@
   <link rel="dns-prefetch" href="//www.instagram.com" />
   <link rel="dns-prefetch" href="//www.youtube.com" />
   <link rel="preload" href="/assets/images/Sasha%20Persholja%20Live.png" as="image" fetchpriority="high" />
-  <link rel="preload" href="/styles-v7.css" as="style" />
-  <link rel="stylesheet" href="/styles-v7.css" />
+  <link rel="preload" href="/styles-v8.css" as="style" />
+  <link rel="stylesheet" href="/styles-v8.css" />
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-WM5Q0BB4KR"></script>
@@ -253,7 +253,12 @@
         <source src="/assets/video/big-black-puppet.mp4" type="video/mp4" />
       </video>
       <div class="hero-shade"></div>
-      <button class="sound-toggle" id="soundToggle" type="button" aria-label="Turn song on for the featured Big Black Puppet video" aria-pressed="false">🔇 Song Off</button>
+      <div class="song-controls" role="group" aria-label="Big Black Puppet song controls">
+        <button class="sound-toggle" id="soundToggle" type="button" aria-label="Turn song on for the featured Big Black Puppet video" aria-pressed="false">🔇 Song Off</button>
+        <button class="volume-button" id="volumeDown" type="button" aria-label="Decrease song volume">−</button>
+        <span class="volume-value" id="volumeValue" role="status" aria-live="polite" aria-label="Current song volume: 60 percent">60%</span>
+        <button class="volume-button" id="volumeUp" type="button" aria-label="Increase song volume">+</button>
+      </div>
 
       <div class="hero-copy">
         <p class="byline">FEATURED RELEASE</p>
@@ -317,6 +322,6 @@
     <p>© SASHA PERSHOLJA. ALL RIGHTS RESERVED — FEJKAVANGARD MUSIC</p>
   </footer>
 
-  <script src="/script-v3.js" defer></script>
+  <script src="/script-v4.js" defer></script>
 </body>
 </html>
