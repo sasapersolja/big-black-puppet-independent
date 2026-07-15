@@ -1,13 +1,13 @@
 @import url("/styles-v5.css");
 .artist-logo{color:#FF8C00}
-.hero-shade{background:radial-gradient(circle at 73% 28%,rgba(255,0,0,.22),transparent 25%),linear-gradient(90deg,#020202 0%,rgba(2,2,2,.985) 31%,rgba(2,2,2,.62) 58%,rgba(0,0,0,.3) 100%),linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.82))}
+.hero-shade{background:radial-gradient(circle at 73% 28%,rgba(255,0,0,.22),transparent 25%),linear-gradient(90deg,#020202 0%,rgba(2,2,2,.985) 31%,rgba(2,2,2,.62) 58%,rgba(0,0,0,.3) 100%),linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.82));box-shadow:inset 0 0 0 100vmax rgba(0,0,0,.2)}
 .hero-copy{padding-top:24px}
-.hero h1{margin-bottom:24px}
-.byline{margin-bottom:8px}
+.hero h1{margin-bottom:44px}
+.byline{margin-bottom:28px}
 .hero-line{margin-bottom:38px}
-.buy-track-button{margin-bottom:18px}
-.main-button{border-width:2px;box-shadow:0 0 10px rgba(255,23,48,.58),0 0 24px rgba(255,0,0,.2);background:rgba(0,0,0,.35)}
-.sound-toggle{right:18px;bottom:18px;padding:8px 11px;border-color:rgba(72,189,232,.68);background:rgba(0,0,0,.6);font-size:.68rem;letter-spacing:.1em;box-shadow:0 0 12px rgba(72,189,232,.16)}
-@media(max-width:980px){.hero-copy{padding-top:46vh}.hero h1{margin-bottom:20px}.hero-line{margin-bottom:30px}.sound-toggle{right:12px;bottom:12px}}
-@media(max-width:430px){.hero-copy{padding-top:44vh}.hero h1{margin-bottom:18px}.buy-track-button{margin-bottom:14px}.sound-toggle{padding:7px 9px;font-size:.62rem}}
+.buy-track-button{margin-bottom:18px;position:relative;top:20px}
+.main-button{border-width:2px;box-shadow:0 0 10px rgba(255,23,48,.58),0 0 24px rgba(255,0,0,.2);background:rgba(0,0,0,.35);position:relative;top:20px}
+.sound-toggle{right:-7px;bottom:-7px;padding:8px 11px;border-color:rgba(72,189,232,.68);background:rgba(0,0,0,.6);font-size:.68rem;letter-spacing:.1em;box-shadow:0 0 12px rgba(72,189,232,.16)}
+@media(max-width:980px){.hero-copy{padding-top:46vh}.hero h1{margin-bottom:40px}.hero-line{margin-bottom:30px}.sound-toggle{right:-13px;bottom:-13px}}
+@media(max-width:430px){.hero-copy{padding-top:44vh}.hero h1{margin-bottom:38px}.buy-track-button{margin-bottom:14px}.sound-toggle{right:-13px;bottom:-13px;padding:7px 9px;font-size:.62rem}}
 @media(prefers-reduced-motion:reduce){.main-button{transition:none}}
