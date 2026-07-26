@@ -26,10 +26,13 @@ const OUTBOUND_EVENTS = [
   { selector: '.platform-card.amazon', eventName: 'platform_click', params: { track_title: TRACK_TITLE, platform: 'Amazon Music' } },
   { selector: '.platform-card.spotify', eventName: 'platform_click', params: { track_title: TRACK_TITLE, platform: 'Spotify' } },
   { selector: '.platform-card.youtube', eventName: 'platform_click', params: { track_title: TRACK_TITLE, platform: 'YouTube Music' } },
-  { selector: 'a[href="mailto:sasha.persholja@gmail.com"]', eventName: 'contact', params: { method: 'email' } },
+  { selector: 'a[href="mailto:sasha.persholja@gmail.com"]', eventName: 'contact_click', params: { method: 'email' } },
   { selector: 'a[href="https://www.facebook.com/SashaPersholja/"]', eventName: 'social_click', params: { network: 'facebook' } },
   { selector: 'a[href="https://www.instagram.com/sasha.persholja/"]', eventName: 'social_click', params: { network: 'instagram' } },
-  { selector: 'a[href="https://www.youtube.com/@mkudmkud"]', eventName: 'social_click', params: { network: 'youtube' } }
+  { selector: 'a[href="https://www.youtube.com/@mkudmkud"]', eventName: 'social_click', params: { network: 'youtube' } },
+  { selector: '.main-button[href="#listen"]', eventName: 'navigation_click', params: { destination: 'listen_section', label: 'choose_your_platform' } },
+  { selector: '.topnav a[href="#contact"]', eventName: 'navigation_click', params: { destination: 'contact_section', label: 'contact' } },
+  { selector: 'a[href="https://sashapersholja.com/"]', eventName: 'website_click', params: { destination: 'official_website' } }
 ];
 
 function sendGAEvent(eventName, params = {}) {
